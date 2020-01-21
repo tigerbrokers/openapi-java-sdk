@@ -77,6 +77,26 @@ public class TigerHttpClient implements TigerClient {
     }
   }
 
+  public TigerHttpClient(String serverUrl, String tigerId, String privateKey, String tigerPublicKey) {
+    if (serverUrl == null) {
+      throw new RuntimeException("serverUrl is empty.");
+    }
+    if (tigerId == null) {
+      throw new RuntimeException("tigerId is empty.");
+    }
+    if (privateKey == null) {
+      throw new RuntimeException("privateKey is empty.");
+    }
+    if (tigerPublicKey == null) {
+      throw new RuntimeException("tigerPublicKey is empty.");
+    }
+
+    this.serverUrl = serverUrl;
+    this.tigerId = tigerId;
+    this.privateKey = privateKey;
+    this.tigerPublicKey = tigerPublicKey;
+  }
+
   public TigerHttpClient(String serverUrl) {
     this.serverUrl = serverUrl;
   }
