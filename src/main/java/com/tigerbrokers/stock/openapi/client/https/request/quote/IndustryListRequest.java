@@ -22,16 +22,16 @@ public class IndustryListRequest extends TigerCommonRequest implements TigerRequ
 
   static class IndustryListModel extends ApiModel {
 
-    private int industryLevel;
+    private IndustryLevel industryLevel;
 
     public IndustryListModel(IndustryLevel industryLevel) {
       if (industryLevel == null) {
         throw new RuntimeException("industry level cannot be null");
       }
-      this.industryLevel = industryLevel.getLevel();
+      this.industryLevel = industryLevel;
     }
 
-    public int getIndustryLevel() {
+    public IndustryLevel getIndustryLevel() {
       return industryLevel;
     }
   }
