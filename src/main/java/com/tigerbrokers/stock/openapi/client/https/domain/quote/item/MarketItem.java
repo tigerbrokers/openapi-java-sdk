@@ -14,9 +14,14 @@ public class MarketItem extends ApiModel {
   private String market;
 
   /**
-   * 市场状态(未开盘，交易中，休市等）
+   * market status detail
    **/
   private String marketStatus;
+
+  /**
+   * market status(NOT_YET_OPEN,PRE_HOUR_TRADING,TRADING,MIDDLE_CLOSE,POST_HOUR_TRADING,CLOSING,EARLY_CLOSED,MARKET_CLOSED）
+   */
+  private String status;
 
   /**
    * 最近开盘、交易时间  MM-dd HH:mm:ss z
@@ -39,6 +44,14 @@ public class MarketItem extends ApiModel {
     this.marketStatus = marketStatus;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
+  }
+
   public String getOpenTime() {
     return openTime;
   }
@@ -52,6 +65,7 @@ public class MarketItem extends ApiModel {
     return "MarketItem{" +
         "market='" + market + '\'' +
         ", marketStatus='" + marketStatus + '\'' +
+        ", status='" + status + '\'' +
         ", openTime='" + openTime + '\'' +
         '}';
   }
