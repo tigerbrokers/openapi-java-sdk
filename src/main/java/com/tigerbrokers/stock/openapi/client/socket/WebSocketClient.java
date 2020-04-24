@@ -1,9 +1,6 @@
 package com.tigerbrokers.stock.openapi.client.socket;
 
-import com.tigerbrokers.stock.openapi.client.constant.ReqProtocolType;
 import com.tigerbrokers.stock.openapi.client.struct.ClientHeartBeatData;
-import com.tigerbrokers.stock.openapi.client.struct.enums.Exchange;
-import com.tigerbrokers.stock.openapi.client.struct.enums.QuoteSubject;
 import com.tigerbrokers.stock.openapi.client.struct.enums.Subject;
 import com.tigerbrokers.stock.openapi.client.util.ApiLogger;
 import com.tigerbrokers.stock.openapi.client.util.StompMessageUtil;
@@ -401,100 +398,6 @@ public class WebSocketClient implements SubscribeAsyncApi {
     subscribeList.remove(subject);
 
     return frame.headers().getAsString(StompHeaders.ID);
-  }
-
-  @Override
-  public String subscribeQuote(Set<String> symbols) {
-    return subscribeQuote(symbols, QuoteSubject.Quote);
-  }
-
-  @Override
-  public String subscribeQuote(Set<String> symbols, List<String> focusKeys) {
-    return subscribeQuote(symbols, QuoteSubject.Quote, focusKeys);
-  }
-
-  @Override
-  public String cancelSubscribeQuote(Set<String> symbols) {
-    return cancelSubscribeQuote(symbols, QuoteSubject.Quote);
-  }
-
-  @Override
-  public String subscribeOption(Set<String> symbols) {
-    return subscribeQuote(symbols, QuoteSubject.Option);
-  }
-
-  @Override
-  public String cancelSubscribeOption(Set<String> symbols) {
-    return cancelSubscribeQuote(symbols, QuoteSubject.Option);
-  }
-
-  @Override
-  public String subscribeFuture(Set<String> symbols) {
-    return subscribeQuote(symbols, QuoteSubject.Future);
-  }
-
-  @Override
-  public String cancelSubscribeFuture(Set<String> symbols) {
-    return cancelSubscribeQuote(symbols, QuoteSubject.Future);
-  }
-
-  @Override
-  public String subscribeAskBid(Set<String> symbols, Exchange exchange) {
-    if (!isConnected()) {
-      notConnect();
-      return null;
-    }
-    StompFrame frame = StompMessageUtil.buildSubscribeMessage(symbols, exchange, QuoteSubject.AskBid);
-    channel.writeAndFlush(frame);
-    subscribeSymbols.addAll(symbols);
-    ApiLogger.info("send subscribe [{}] message, symbols:{}", QuoteSubject.AskBid, symbols);
-
-    return frame.headers().getAsString(StompHeaders.ID);
-  }
-
-  @Override
-  public String cancelSubscribeAskBid(Set<String> symbols) {
-    return cancelSubscribeQuote(symbols, QuoteSubject.AskBid);
-  }
-
-  private String subscribeQuote(Set<String> symbols, QuoteSubject subject) {
-    return subscribeQuote(symbols, subject, null);
-  }
-
-  private String subscribeQuote(Set<String> symbols, QuoteSubject subject, List<String> focusKeys) {
-    if (!isConnected()) {
-      notConnect();
-      return null;
-    }
-    StompFrame frame;
-    if (focusKeys == null) {
-      frame = StompMessageUtil.buildSubscribeMessage(symbols, subject);
-    } else {
-      frame = StompMessageUtil.buildSubscribeMessage(symbols, subject, new HashSet<>(focusKeys));
-    }
-    channel.writeAndFlush(frame);
-    subscribeSymbols.addAll(symbols);
-    ApiLogger.info("send subscribe [{}] message, symbols:{},focusKeys:{}", subject, symbols, focusKeys);
-
-    return frame.headers().getAsString(StompHeaders.ID);
-  }
-
-  private String cancelSubscribeQuote(Set<String> symbols, QuoteSubject subject) {
-    if (!isConnected()) {
-      notConnect();
-      return null;
-    }
-    StompFrame frame = StompMessageUtil.buildUnSubscribeMessage(symbols, subject);
-    channel.writeAndFlush(frame);
-    subscribeSymbols.removeAll(symbols);
-    ApiLogger.info("send cancel subscribe [{}] message, symbols:{}.", subject, symbols);
-
-    return frame.headers().getAsString(StompHeaders.ID);
-  }
-
-  @Override
-  public String getSubscribedSymbols() {
-    return sendMessage(ReqProtocolType.REQ_SUB_SYMBOLS, null);
   }
 
   private String sendMessage(int reqType, String message) {

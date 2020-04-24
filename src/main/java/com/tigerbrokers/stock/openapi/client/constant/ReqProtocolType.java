@@ -24,15 +24,5 @@ public interface ReqProtocolType {
   /**
    * 行情
    */
-  int REQ_MARKET_STATE = 101;
-  int REQ_ALL_SYMBOLS = 102;
-  int REQ_ALL_SYMBOL_NAMES = 103;
-  int REQ_BRIEF_INFO = 104;
-  int REQ_STOCK_DETAIL = 105;
-  int REQ_TIME_LINE = 106;
-  int REQ_HOUR_TRADING_TIME_LINE = 107;
-  int REQ_KLINE = 108;
-  int REQ_TRADE_TICK = 109;
   int REQ_SUB_SYMBOLS = 110;
-  int REQ_SUB_OPTION = 110;
 }

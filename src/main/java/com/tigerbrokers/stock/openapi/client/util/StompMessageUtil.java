@@ -1,7 +1,5 @@
 package com.tigerbrokers.stock.openapi.client.util;
 
-import com.tigerbrokers.stock.openapi.client.struct.enums.Exchange;
-import com.tigerbrokers.stock.openapi.client.struct.enums.QuoteSubject;
 import com.tigerbrokers.stock.openapi.client.struct.enums.Subject;
 import com.tigerbrokers.stock.openapi.client.util.builder.StompHeaderBuilder;
 import io.netty.buffer.Unpooled;
@@ -109,42 +107,6 @@ public class StompMessageUtil {
     return stompFrame;
   }
 
-  public static StompFrame buildSubscribeMessage(Set<String> symbols, QuoteSubject subject) {
-    return buildSubscribeMessage(symbols, null, subject);
-  }
-
-  public static StompFrame buildSubscribeMessage(Set<String> symbols, Exchange exchange, QuoteSubject subject) {
-    StompFrame stompFrame = new DefaultStompFrame(StompCommand.SUBSCRIBE);
-    int id = increment.addAndGet(1);
-    StompHeaders headers =
-        StompHeaderBuilder.instance()
-            .id(id)
-            .version()
-            .host()
-            .subject(subject.name())
-            .symbols(symbols)
-            .exchange(exchange)
-            .build();
-    stompFrame.headers().set(headers);
-    return stompFrame;
-  }
-
-  public static StompFrame buildSubscribeMessage(Set<String> symbols, QuoteSubject subject, Set<String> focusKeys) {
-    StompFrame stompFrame = new DefaultStompFrame(StompCommand.SUBSCRIBE);
-    int id = increment.addAndGet(1);
-    StompHeaders headers =
-        StompHeaderBuilder.instance()
-            .id(id)
-            .version()
-            .host()
-            .subject(subject.name())
-            .symbols(symbols)
-            .focusKeys(focusKeys)
-            .build();
-    stompFrame.headers().set(headers);
-    return stompFrame;
-  }
-
   public static StompFrame buildSubscribeMessage(Subject subject, Set<String> focusKeys) {
     StompFrame stompFrame = new DefaultStompFrame(StompCommand.SUBSCRIBE);
     int id = increment.addAndGet(1);
@@ -158,15 +120,6 @@ public class StompMessageUtil {
     StompFrame stompFrame = new DefaultStompFrame(StompCommand.UNSUBSCRIBE);
     int id = increment.addAndGet(1);
     StompHeaders headers = StompHeaderBuilder.instance().id(id).version().host().subject(subject).build();
-    stompFrame.headers().set(headers);
-    return stompFrame;
-  }
-
-  public static StompFrame buildUnSubscribeMessage(Set<String> symbols, QuoteSubject subject) {
-    StompFrame stompFrame = new DefaultStompFrame(StompCommand.UNSUBSCRIBE);
-    int id = increment.addAndGet(1);
-    StompHeaders headers =
-        StompHeaderBuilder.instance().id(id).version().host().subject(subject.name()).symbols(symbols).build();
     stompFrame.headers().set(headers);
     return stompFrame;
   }
